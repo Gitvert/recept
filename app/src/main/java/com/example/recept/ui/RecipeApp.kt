@@ -2,6 +2,7 @@ package com.example.recept.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -15,7 +16,10 @@ import com.example.recept.model.Recipe
 fun RecipeApp(recipes: List<Recipe>) {
     var selectedRecipe by remember { mutableStateOf<Recipe?>(null) }
 
-    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        containerColor = MaterialTheme.colorScheme.background,
+    ) { innerPadding ->
         val contentModifier = Modifier
             .padding(innerPadding)
             .fillMaxSize()
