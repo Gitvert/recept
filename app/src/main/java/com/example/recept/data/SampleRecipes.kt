@@ -7,11 +7,11 @@ val sampleRecipes = listOf(
     Recipe(
         name = "Pannkakor",
         ingredients = listOf(
-            Ingredient(name = "vetemjöl", amount = "2,5 dl"),
-            Ingredient(name = "mjölk", amount = "6 dl"),
-            Ingredient(name = "ägg", amount = "3 st"),
-            Ingredient(name = "salt", amount = "1/2 tsk"),
-            Ingredient(name = "smör", amount = "2 msk"),
+            Ingredient(name = "vetemjöl", quantity = 2.5, unit = "dl"),
+            Ingredient(name = "mjölk", quantity = 6.0, unit = "dl"),
+            Ingredient(name = "ägg", quantity = 3.0, unit = "st"),
+            Ingredient(name = "salt", quantity = 0.5, unit = "tsk"),
+            Ingredient(name = "smör", quantity = 2.0, unit = "msk"),
         ),
         steps = listOf(
             "Vispa ihop mjöl och hälften av mjölken",
@@ -23,11 +23,11 @@ val sampleRecipes = listOf(
     Recipe(
         name = "Tomatpasta",
         ingredients = listOf(
-            Ingredient(name = "pasta", amount = "400 g"),
-            Ingredient(name = "krossade tomater", amount = "800 g"),
-            Ingredient(name = "vitlök", amount = "3 klyftor"),
-            Ingredient(name = "olivolja", amount = "2 msk"),
-            Ingredient(name = "basilika", amount = "1 kruka"),
+            Ingredient(name = "pasta", quantity = 400.0, unit = "g"),
+            Ingredient(name = "krossade tomater", quantity = 800.0, unit = "g"),
+            Ingredient(name = "vitlök", quantity = 3.0, unit = "klyftor"),
+            Ingredient(name = "olivolja", quantity = 2.0, unit = "msk"),
+            Ingredient(name = "basilika", quantity = 1.0, unit = "kruka"),
         ),
         steps = listOf(
             "Koka pastan",
@@ -39,11 +39,11 @@ val sampleRecipes = listOf(
     Recipe(
         name = "Omelett",
         ingredients = listOf(
-            Ingredient(name = "ägg", amount = "8 st"),
-            Ingredient(name = "mjölk", amount = "4 msk"),
-            Ingredient(name = "ost", amount = "100 g"),
-            Ingredient(name = "salt", amount = "1/2 tsk"),
-            Ingredient(name = "svartpeppar", amount = "1/4 tsk"),
+            Ingredient(name = "ägg", quantity = 8.0, unit = "st"),
+            Ingredient(name = "mjölk", quantity = 4.0, unit = "msk"),
+            Ingredient(name = "ost", quantity = 100.0, unit = "g"),
+            Ingredient(name = "salt", quantity = 0.5, unit = "tsk"),
+            Ingredient(name = "svartpeppar", quantity = 0.25, unit = "tsk"),
         ),
         steps = listOf(
             "Vispa ihop ägg och mjölk",

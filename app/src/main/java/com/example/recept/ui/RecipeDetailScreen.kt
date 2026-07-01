@@ -19,6 +19,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,7 +33,11 @@ import androidx.compose.ui.unit.dp
 import com.example.recept.data.sampleRecipes
 import com.example.recept.model.Ingredient
 import com.example.recept.model.Recipe
+import com.example.recept.model.displayAmount
+import com.example.recept.model.scaledIngredients
 import com.example.recept.ui.theme.ReceptTheme
+
+private const val MIN_PORTIONS = 1
 
 @Composable
 fun RecipeDetailScreen(
@@ -37,6 +45,9 @@ fun RecipeDetailScreen(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var portions by rememberSaveable { mutableIntStateOf(recipe.portions) }
+    val scaledIngredients = recipe.scaledIngredients(portions)
+
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -57,12 +68,17 @@ fun RecipeDetailScreen(
         }
 
         item {
-            RecipeDetailHeader(recipe = recipe)
+            RecipeDetailHeader(
+                recipe = recipe,
+                portions = portions,
+                onDecreasePortions = { portions = (portions - 1).coerceAtLeast(MIN_PORTIONS) },
+                onIncreasePortions = { portions++ },
+            )
         }
 
         item {
             RecipeSection(title = "Ingredienser") {
-                recipe.ingredients.forEach { ingredient ->
+                scaledIngredients.forEach { ingredient ->
                     IngredientRow(ingredient = ingredient)
                 }
             }
@@ -79,7 +95,12 @@ fun RecipeDetailScreen(
 }
 
 @Composable
-private fun RecipeDetailHeader(recipe: Recipe) {
+private fun RecipeDetailHeader(
+    recipe: Recipe,
+    portions: Int,
+    onDecreasePortions: () -> Unit,
+    onIncreasePortions: () -> Unit,
+) {
     Column(
         verticalArrangement = Arrangement.spacedBy(14.dp),
         modifier = Modifier.fillMaxWidth(),
@@ -90,11 +111,11 @@ private fun RecipeDetailHeader(recipe: Recipe) {
             color = MaterialTheme.colorScheme.primary,
         )
 
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            DetailPill(
-                text = portionLabel(recipe.portions),
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            PortionsStepper(
+                portions = portions,
+                onDecrease = onDecreasePortions,
+                onIncrease = onIncreasePortions,
             )
             DetailPill(
                 text = ingredientCountLabel(recipe.ingredients.size),
@@ -157,7 +178,7 @@ private fun IngredientRow(ingredient: Ingredient) {
                 color = MaterialTheme.colorScheme.primaryContainer,
             ) {
                 Text(
-                    text = ingredient.amount,
+                    text = ingredient.displayAmount(),
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     maxLines = 1,
@@ -228,6 +249,51 @@ private fun DetailPill(text: String, containerColor: Color, contentColor: Color)
             maxLines = 1,
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
         )
+    }
+}
+
+@Composable
+private fun PortionsStepper(portions: Int, onDecrease: () -> Unit, onIncrease: () -> Unit) {
+    Surface(
+        shape = RoundedCornerShape(percent = 50),
+        color = MaterialTheme.colorScheme.primaryContainer,
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            modifier = Modifier.padding(horizontal = 4.dp, vertical = 4.dp),
+        ) {
+            StepperButton(symbol = "−", onClick = onDecrease, enabled = portions > MIN_PORTIONS)
+            Text(
+                text = portionLabel(portions),
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                modifier = Modifier.padding(horizontal = 2.dp),
+            )
+            StepperButton(symbol = "+", onClick = onIncrease, enabled = true)
+        }
+    }
+}
+
+@Composable
+private fun StepperButton(symbol: String, onClick: () -> Unit, enabled: Boolean) {
+    Surface(
+        onClick = onClick,
+        enabled = enabled,
+        shape = RoundedCornerShape(percent = 50),
+        color = MaterialTheme.colorScheme.primary,
+        contentColor = MaterialTheme.colorScheme.onPrimary,
+    ) {
+        Box(
+            modifier = Modifier.size(24.dp),
+            contentAlignment = Alignment.Center,
+        ) {
+            Text(
+                text = symbol,
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.Bold,
+            )
+        }
     }
 }
 

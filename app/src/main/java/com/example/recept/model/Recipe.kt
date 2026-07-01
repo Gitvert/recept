@@ -9,5 +9,6 @@ data class Recipe(
 
 data class Ingredient(
     val name: String,
-    val amount: String,
+    val quantity: Double,
+    val unit: String,
 )
