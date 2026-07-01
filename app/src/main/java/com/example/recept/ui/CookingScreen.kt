@@ -40,7 +40,7 @@ import com.example.recept.ui.theme.ReceptTheme
 private const val MIN_PORTIONS = 1
 
 @Composable
-fun RecipeDetailScreen(
+fun CookingScreen(
     recipe: Recipe,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -68,7 +68,7 @@ fun RecipeDetailScreen(
         }
 
         item {
-            RecipeDetailHeader(
+            CookingHeader(
                 recipe = recipe,
                 portions = portions,
                 onDecreasePortions = { portions = (portions - 1).coerceAtLeast(MIN_PORTIONS) },
@@ -95,7 +95,7 @@ fun RecipeDetailScreen(
 }
 
 @Composable
-private fun RecipeDetailHeader(
+private fun CookingHeader(
     recipe: Recipe,
     portions: Int,
     onDecreasePortions: () -> Unit,
@@ -117,12 +117,12 @@ private fun RecipeDetailHeader(
                 onDecrease = onDecreasePortions,
                 onIncrease = onIncreasePortions,
             )
-            DetailPill(
+            CookingPill(
                 text = ingredientCountLabel(recipe.ingredients.size),
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                 contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
             )
-            DetailPill(
+            CookingPill(
                 text = "${recipe.steps.size} steg",
                 containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                 contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
@@ -237,7 +237,7 @@ private fun StepRow(number: Int, text: String) {
 }
 
 @Composable
-private fun DetailPill(text: String, containerColor: Color, contentColor: Color) {
+private fun CookingPill(text: String, containerColor: Color, contentColor: Color) {
     Surface(
         shape = RoundedCornerShape(percent = 50),
         color = containerColor,
@@ -299,9 +299,9 @@ private fun StepperButton(symbol: String, onClick: () -> Unit, enabled: Boolean)
 
 @Preview(showBackground = true)
 @Composable
-fun RecipeDetailScreenPreview() {
+fun CookingScreenPreview() {
     ReceptTheme {
-        RecipeDetailScreen(
+        CookingScreen(
             recipe = sampleRecipes.first(),
             onBackClick = {},
         )

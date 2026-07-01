@@ -21,7 +21,7 @@ Run all commands from the repository root using the Gradle wrapper (`gradlew.bat
 
 The app should follow a clean organized architecture that allows it to keep growing. KISS (Keep it simple stupid) and YAGNI (you ain't gonna need it) should be followed when adding new functionality since things can always be extended at a later point when needed.
 
-Each screen file includes `@Preview` composables at the bottom (e.g. `RecipeListScreenPreview`, `EmptyRecipeListScreenPreview`, `RecipeDetailScreenPreview`) using `sampleRecipes` — use these via Android Studio's preview pane when iterating on UI.
+Each screen file includes `@Preview` composables at the bottom (e.g. `RecipeListScreenPreview`, `EmptyRecipeListScreenPreview`, `CookingScreenPreview`) using `sampleRecipes` — use these via Android Studio's preview pane when iterating on UI.
 
 ## Notes
 

@@ -25,7 +25,7 @@ fun RecipeApp(recipes: List<Recipe>) {
             .fillMaxSize()
 
         selectedRecipe?.let { recipe ->
-            RecipeDetailScreen(
+            CookingScreen(
                 recipe = recipe,
                 onBackClick = { selectedRecipe = null },
                 modifier = contentModifier,
