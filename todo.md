@@ -11,7 +11,6 @@ Idéer på funktioner att lägga till i appen, utöver de som redan finns. Måle
 
 ## Bra att lägga till efter grunden (kärnan i "titta på recept medan man lagar")
 
-- **"Laga nu"-läge** – större text, skärmen släcks inte, kryssa av steg/ingredienser efter hand.
 - **Inköpslista** – generera en lista från ett eller flera recepts ingredienser, gärna med ihopslagning av dubbletter.
 
 ## Organisation

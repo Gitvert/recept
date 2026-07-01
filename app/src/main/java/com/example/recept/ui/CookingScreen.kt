@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -21,6 +22,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -46,50 +48,71 @@ fun CookingScreen(
     modifier: Modifier = Modifier,
 ) {
     var portions by rememberSaveable { mutableIntStateOf(recipe.portions) }
+    var isCookingModeActive by rememberSaveable { mutableStateOf(false) }
     val scaledIngredients = recipe.scaledIngredients(portions)
 
-    LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
-        contentPadding = PaddingValues(start = 20.dp, top = 20.dp, end = 20.dp, bottom = 28.dp),
-        verticalArrangement = Arrangement.spacedBy(20.dp),
-    ) {
-        item {
-            TextButton(
-                onClick = onBackClick,
-                contentPadding = PaddingValues(horizontal = 0.dp, vertical = 8.dp),
-            ) {
-                Text(
-                    text = "← Tillbaka",
-                    style = MaterialTheme.typography.labelLarge,
+    if (isCookingModeActive) {
+        CookingModeScreen(
+            recipe = recipe,
+            ingredients = scaledIngredients,
+            onExit = { isCookingModeActive = false },
+        )
+        return
+    }
+
+    Box(modifier = modifier.fillMaxSize()) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background),
+            contentPadding = PaddingValues(start = 20.dp, top = 20.dp, end = 20.dp, bottom = 28.dp),
+            verticalArrangement = Arrangement.spacedBy(20.dp),
+        ) {
+            item {
+                TextButton(
+                    onClick = onBackClick,
+                    contentPadding = PaddingValues(horizontal = 0.dp, vertical = 8.dp),
+                ) {
+                    Text(
+                        text = "← Tillbaka",
+                        style = MaterialTheme.typography.labelLarge,
+                    )
+                }
+            }
+
+            item {
+                CookingHeader(
+                    recipe = recipe,
+                    portions = portions,
+                    onDecreasePortions = { portions = (portions - 1).coerceAtLeast(MIN_PORTIONS) },
+                    onIncreasePortions = { portions++ },
                 )
             }
-        }
 
-        item {
-            CookingHeader(
-                recipe = recipe,
-                portions = portions,
-                onDecreasePortions = { portions = (portions - 1).coerceAtLeast(MIN_PORTIONS) },
-                onIncreasePortions = { portions++ },
-            )
-        }
+            item {
+                RecipeSection(title = "Ingredienser") {
+                    scaledIngredients.forEach { ingredient ->
+                        IngredientRow(ingredient = ingredient)
+                    }
+                }
+            }
 
-        item {
-            RecipeSection(title = "Ingredienser") {
-                scaledIngredients.forEach { ingredient ->
-                    IngredientRow(ingredient = ingredient)
+            item {
+                RecipeSection(title = "Gör så här") {
+                    recipe.steps.forEachIndexed { index, step ->
+                        StepRow(number = index + 1, text = step)
+                    }
                 }
             }
         }
 
-        item {
-            RecipeSection(title = "Gör så här") {
-                recipe.steps.forEachIndexed { index, step ->
-                    StepRow(number = index + 1, text = step)
-                }
-            }
+        ExtendedFloatingActionButton(
+            onClick = { isCookingModeActive = true },
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(20.dp),
+        ) {
+            Text("Laga nu")
         }
     }
 }
