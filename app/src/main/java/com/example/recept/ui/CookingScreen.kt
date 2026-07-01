@@ -1,5 +1,6 @@
 package com.example.recept.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -59,6 +60,8 @@ fun CookingScreen(
         )
         return
     }
+
+    BackHandler(onBack = onBackClick)
 
     Box(modifier = modifier.fillMaxSize()) {
         LazyColumn(
