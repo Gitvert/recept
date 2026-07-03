@@ -148,11 +148,6 @@ private fun CookingHeader(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                 contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
             )
-            CookingPill(
-                text = "${recipe.steps.size} steg",
-                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
-            )
         }
 
         Text(

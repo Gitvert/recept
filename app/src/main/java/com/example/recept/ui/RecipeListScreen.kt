@@ -51,10 +51,7 @@ fun RecipeListScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         item {
-            RecipeListHeader(
-                recipeCount = recipes.size,
-                ingredientCount = recipes.sumOf { it.ingredients.size },
-            )
+            RecipeListHeader()
         }
 
         if (recipes.isEmpty()) {
@@ -74,32 +71,12 @@ fun RecipeListScreen(
 }
 
 @Composable
-private fun RecipeListHeader(recipeCount: Int, ingredientCount: Int) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(14.dp),
-        modifier = Modifier.fillMaxWidth(),
-    ) {
-        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text(
-                text = "Recept",
-                style = MaterialTheme.typography.displaySmall,
-                color = MaterialTheme.colorScheme.primary,
-            )
-        }
-
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            MetaPill(
-                text = "$recipeCount recept",
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            )
-            MetaPill(
-                text = ingredientCountLabel(ingredientCount),
-                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
-            )
-        }
-    }
+private fun RecipeListHeader() {
+    Text(
+        text = "Recept",
+        style = MaterialTheme.typography.displaySmall,
+        color = MaterialTheme.colorScheme.primary,
+    )
 }
 
 @Composable
