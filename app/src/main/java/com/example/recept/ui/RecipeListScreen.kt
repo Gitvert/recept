@@ -16,9 +16,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,7 +47,11 @@ fun RecipeListScreen(
     recipes: List<Recipe>,
     onRecipeClick: (Recipe) -> Unit,
     modifier: Modifier = Modifier,
+    initialQuery: String = "",
 ) {
+    var query by remember { mutableStateOf(initialQuery) }
+    val filteredRecipes = recipes.filter { it.name.contains(query, ignoreCase = true) }
+
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -54,12 +63,23 @@ fun RecipeListScreen(
             RecipeListHeader()
         }
 
+        item {
+            SearchField(
+                query = query,
+                onQueryChange = { query = it },
+            )
+        }
+
         if (recipes.isEmpty()) {
             item {
-                EmptyRecipes(modifier = Modifier.fillParentMaxSize())
+                ListMessage(text = "Inga recept än", modifier = Modifier.fillParentMaxSize())
+            }
+        } else if (filteredRecipes.isEmpty()) {
+            item {
+                ListMessage(text = "Inga recept matchar sökningen", modifier = Modifier.fillParentMaxSize())
             }
         } else {
-            itemsIndexed(recipes) { index, recipe ->
+            itemsIndexed(filteredRecipes) { index, recipe ->
                 RecipeRow(
                     recipe = recipe,
                     accentColor = RecipeAccentColors[index % RecipeAccentColors.size],
@@ -76,6 +96,21 @@ private fun RecipeListHeader() {
         text = "Recept",
         style = MaterialTheme.typography.displaySmall,
         color = MaterialTheme.colorScheme.primary,
+    )
+}
+
+@Composable
+private fun SearchField(
+    query: String,
+    onQueryChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    OutlinedTextField(
+        value = query,
+        onValueChange = onQueryChange,
+        modifier = modifier.fillMaxWidth(),
+        placeholder = { Text("Sök recept...") },
+        singleLine = true,
     )
 }
 
@@ -151,7 +186,7 @@ fun RecipeRow(
 }
 
 @Composable
-fun EmptyRecipes(modifier: Modifier = Modifier) {
+private fun ListMessage(text: String, modifier: Modifier = Modifier) {
     Box(
         modifier = modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center,
@@ -162,7 +197,7 @@ fun EmptyRecipes(modifier: Modifier = Modifier) {
             shadowElevation = 1.dp,
         ) {
             Text(
-                text = "Inga recept än",
+                text = text,
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(horizontal = 24.dp, vertical = 18.dp),
@@ -223,6 +258,18 @@ fun EmptyRecipeListScreenPreview() {
         RecipeListScreen(
             recipes = emptyList(),
             onRecipeClick = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun NoSearchResultsPreview() {
+    ReceptTheme {
+        RecipeListScreen(
+            recipes = sampleRecipes,
+            onRecipeClick = {},
+            initialQuery = "zzz",
         )
     }
 }
