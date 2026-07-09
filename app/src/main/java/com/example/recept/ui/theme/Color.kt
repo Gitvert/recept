@@ -14,7 +14,6 @@ val DeepGreen = Color(0xFF33452F)
 val AccentGreen = Color(0xFF4A6047)
 val TagText = Color(0xFF5F7A4A)
 val TagBg = Color(0xFFE7ECDF)
-val StepNumber = Color(0xFF8FA06A)
 
 val TextPrimary = Color(0xFF2B2A22)
 val TextSecondary = Color(0xFF5E5C4C)

@@ -44,7 +44,6 @@ import com.example.recept.ui.theme.CheckedDim
 import com.example.recept.ui.theme.CreamSurface
 import com.example.recept.ui.theme.PlaceholderLabel
 import com.example.recept.ui.theme.PrimaryGreen
-import com.example.recept.ui.theme.StepNumber
 import com.example.recept.ui.theme.StripeDark
 import com.example.recept.ui.theme.StripeLight
 import com.example.recept.ui.theme.TextPrimary
@@ -84,7 +83,6 @@ fun NordicCheckbox(
 
 @Composable
 fun StepCard(
-    number: Int,
     text: String,
     checked: Boolean,
     onToggle: () -> Unit,
@@ -112,12 +110,7 @@ fun StepCard(
                 cornerRadius = checkboxCorner,
             )
             Text(
-                text = buildAnnotatedString {
-                    withStyle(SpanStyle(fontWeight = FontWeight.ExtraBold, color = StepNumber)) {
-                        append("$number  ")
-                    }
-                    append(text)
-                },
+                text = text,
                 style = MaterialTheme.typography.bodyMedium,
                 color = if (checked) CheckedDim else TextPrimary,
                 textDecoration = if (checked) TextDecoration.LineThrough else TextDecoration.None,

@@ -171,7 +171,6 @@ fun CookingScreen(
 
                 itemsIndexed(recipe.steps) { index, step ->
                     StepCard(
-                        number = index + 1,
                         text = step,
                         checked = index in checkedSteps,
                         onToggle = { toggleStep(index) },

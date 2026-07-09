@@ -35,14 +35,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.recept.R
+import com.example.recept.data.sampleRecipes
 import com.example.recept.model.Ingredient
 import com.example.recept.model.Recipe
+import com.example.recept.model.scaledIngredients
 import com.example.recept.ui.theme.AccentGreen
 import com.example.recept.ui.theme.CardBorder
 import com.example.recept.ui.theme.CreamSurface
 import com.example.recept.ui.theme.Hairline
+import com.example.recept.ui.theme.ReceptTheme
 import com.example.recept.ui.theme.SurfaceAlt
 
 @Composable
@@ -66,6 +70,23 @@ fun CookingModeScreen(
 
     BackHandler(onBack = onExit)
 
+    CookingModeContent(
+        recipe = recipe,
+        ingredients = ingredients,
+        checkedSteps = checkedSteps,
+        onToggleStep = onToggleStep,
+        onExit = onExit,
+    )
+}
+
+@Composable
+private fun CookingModeContent(
+    recipe: Recipe,
+    ingredients: List<Ingredient>,
+    checkedSteps: Set<Int>,
+    onToggleStep: (Int) -> Unit,
+    onExit: () -> Unit,
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -93,7 +114,6 @@ fun CookingModeScreen(
                 }
                 itemsIndexed(recipe.steps) { index, step ->
                     StepCard(
-                        number = index + 1,
                         text = step,
                         checked = index in checkedSteps,
                         onToggle = { onToggleStep(index) },
@@ -179,4 +199,19 @@ private tailrec fun Context.findActivity(): Activity = when (this) {
     is Activity -> this
     is ContextWrapper -> baseContext.findActivity()
     else -> error("No Activity found for CookingModeScreen")
+}
+
+@Preview(showBackground = true, widthDp = 812, heightDp = 392)
+@Composable
+fun CookingModeScreenPreview() {
+    val recipe = sampleRecipes.first()
+    ReceptTheme {
+        CookingModeContent(
+            recipe = recipe,
+            ingredients = recipe.scaledIngredients(recipe.portions),
+            checkedSteps = setOf(0),
+            onToggleStep = {},
+            onExit = {},
+        )
+    }
 }
