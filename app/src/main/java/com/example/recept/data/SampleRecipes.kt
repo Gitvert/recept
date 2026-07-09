@@ -5,6 +5,27 @@ import com.example.recept.model.Recipe
 
 val sampleRecipes = listOf(
     Recipe(
+        name = "Våfflor grundrecept",
+        ingredients = listOf(
+            Ingredient(name = "smör eller margarin", quantity = 100.0, unit = "g"),
+            Ingredient(name = "vetemjöl", quantity = 5.0, unit = "dl"),
+            Ingredient(name = "bakpulver", quantity = 1.5, unit = "tsk"),
+            Ingredient(name = "salt", quantity = 0.5, unit = "tsk"),
+            Ingredient(name = "ägg", quantity = 2.0, unit = "st"),
+            Ingredient(name = "mjölk", quantity = 5.0, unit = "dl"),
+        ),
+        steps = listOf(
+            "Smält smöret på svag värme. Låt det svalna.",
+            "Blanda mjöl, bakpulver och salt i en bunke.",
+            "Vispa ner ägg och mjölk i mjölblandningen till en slät smet. Vispa i smöret.",
+            "Grädda våfflorna gyllenbruna i ett hett våffeljärn.",
+            "Servera med sylt och vispad grädde.",
+        ),
+        portions = 4,
+        isVegetarian = true,
+        timeMinutes = 45,
+    ),
+    Recipe(
         name = "Pannkakor",
         ingredients = listOf(
             Ingredient(name = "vetemjöl", quantity = 2.5, unit = "dl"),
@@ -19,6 +40,8 @@ val sampleRecipes = listOf(
             "Stek tunna pannkakor i smör",
         ),
         portions = 4,
+        isVegetarian = true,
+        timeMinutes = 30,
     ),
     Recipe(
         name = "Tomatpasta",
@@ -35,6 +58,8 @@ val sampleRecipes = listOf(
             "Vänd ihop med pasta och basilika",
         ),
         portions = 4,
+        isVegetarian = true,
+        timeMinutes = 30,
     ),
     Recipe(
         name = "Omelett",
@@ -51,6 +76,8 @@ val sampleRecipes = listOf(
             "Strö över ost, vik ihop och servera",
         ),
         portions = 4,
+        isVegetarian = true,
+        timeMinutes = 20,
     ),
     Recipe(
         name = "Köttbullar",
@@ -68,6 +95,8 @@ val sampleRecipes = listOf(
             "Rulla bullar och stek i smör",
         ),
         portions = 4,
+        isVegetarian = false,
+        timeMinutes = 45,
     ),
     Recipe(
         name = "Kycklingcurry",
@@ -86,6 +115,8 @@ val sampleRecipes = listOf(
             "Servera med kokt ris",
         ),
         portions = 4,
+        isVegetarian = false,
+        timeMinutes = 40,
     ),
     Recipe(
         name = "Grönsakssoppa",
@@ -102,6 +133,8 @@ val sampleRecipes = listOf(
             "Mixa slät och rör i grädden",
         ),
         portions = 4,
+        isVegetarian = true,
+        timeMinutes = 40,
     ),
     Recipe(
         name = "Lax med potatis",
@@ -118,6 +151,8 @@ val sampleRecipes = listOf(
             "Servera med smörig potatis",
         ),
         portions = 4,
+        isVegetarian = false,
+        timeMinutes = 40,
     ),
     Recipe(
         name = "Vegetarisk lasagne",
@@ -135,6 +170,8 @@ val sampleRecipes = listOf(
             "Toppa med ost och gratinera i ugn 200°C i 30 min",
         ),
         portions = 6,
+        isVegetarian = true,
+        timeMinutes = 60,
     ),
     Recipe(
         name = "Räksmörgås",
@@ -151,6 +188,8 @@ val sampleRecipes = listOf(
             "Toppa med skagenröra, ägg och en klick citron",
         ),
         portions = 2,
+        isVegetarian = false,
+        timeMinutes = 20,
     ),
     Recipe(
         name = "Fläskfilé med rödvinssås",
@@ -167,6 +206,8 @@ val sampleRecipes = listOf(
             "Servera med kokt potatis",
         ),
         portions = 4,
+        isVegetarian = false,
+        timeMinutes = 60,
     ),
     Recipe(
         name = "Tacos",
@@ -184,6 +225,8 @@ val sampleRecipes = listOf(
             "Fyll tortillabröden med färs och tillbehör",
         ),
         portions = 4,
+        isVegetarian = false,
+        timeMinutes = 30,
     ),
     Recipe(
         name = "Chokladbollar",
@@ -201,6 +244,8 @@ val sampleRecipes = listOf(
             "Rulla bollar och rulla dem i pärlsocker",
         ),
         portions = 20,
+        isVegetarian = true,
+        timeMinutes = 20,
     ),
     Recipe(
         name = "Halloumiwok",
@@ -217,5 +262,7 @@ val sampleRecipes = listOf(
             "Woka grönsakerna, blanda i halloumi och sojasås, servera med ris",
         ),
         portions = 4,
+        isVegetarian = true,
+        timeMinutes = 30,
     ),
 )

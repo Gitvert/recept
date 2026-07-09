@@ -13,6 +13,8 @@ class RecipeScalingTest {
         ),
         steps = listOf("Gör något"),
         portions = 4,
+        isVegetarian = true,
+        timeMinutes = 30,
     )
 
     @Test
@@ -39,15 +41,15 @@ class RecipeScalingTest {
 
     @Test
     fun `formatQuantity recognizes quarter half and three quarter fractions`() {
-        assertEquals("1/4", formatQuantity(0.25))
-        assertEquals("1/2", formatQuantity(0.5))
-        assertEquals("3/4", formatQuantity(0.75))
+        assertEquals("¼", formatQuantity(0.25))
+        assertEquals("½", formatQuantity(0.5))
+        assertEquals("¾", formatQuantity(0.75))
     }
 
     @Test
     fun `formatQuantity combines whole numbers with a recognized fraction`() {
-        assertEquals("1 1/2", formatQuantity(1.5))
-        assertEquals("2 1/4", formatQuantity(2.25))
+        assertEquals("1 ½", formatQuantity(1.5))
+        assertEquals("2 ¼", formatQuantity(2.25))
     }
 
     @Test

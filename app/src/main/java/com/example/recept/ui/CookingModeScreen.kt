@@ -6,6 +6,7 @@ import android.content.ContextWrapper
 import android.content.pm.ActivityInfo
 import android.view.WindowManager
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,36 +15,42 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Checkbox
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.recept.R
 import com.example.recept.model.Ingredient
 import com.example.recept.model.Recipe
-import com.example.recept.model.displayAmount
+import com.example.recept.ui.theme.AccentGreen
+import com.example.recept.ui.theme.CardBorder
+import com.example.recept.ui.theme.CreamSurface
+import com.example.recept.ui.theme.Hairline
+import com.example.recept.ui.theme.SurfaceAlt
 
 @Composable
 fun CookingModeScreen(
     recipe: Recipe,
     ingredients: List<Ingredient>,
+    checkedSteps: Set<Int>,
+    onToggleStep: (Int) -> Unit,
     onExit: () -> Unit,
 ) {
     val activity = LocalContext.current.findActivity()
@@ -59,110 +66,111 @@ fun CookingModeScreen(
 
     BackHandler(onBack = onExit)
 
-    val checkedSteps = remember(recipe.steps.size) { List(recipe.steps.size) { mutableStateOf(false) } }
-
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .windowInsetsPadding(WindowInsets.safeDrawing),
+            .background(MaterialTheme.colorScheme.background),
     ) {
-        Row(modifier = Modifier.fillMaxSize()) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .windowInsetsPadding(WindowInsets.safeDrawing),
+        ) {
             LazyColumn(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxHeight(),
-                contentPadding = PaddingValues(12.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = PaddingValues(start = 26.dp, top = 24.dp, end = 26.dp, bottom = 26.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
+                item {
+                    Text(
+                        text = "Gör så här",
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.padding(bottom = 6.dp),
+                    )
+                }
                 itemsIndexed(recipe.steps) { index, step ->
-                    CheckableRow(
-                        checked = checkedSteps[index].value,
-                        onCheckedChange = { checkedSteps[index].value = it },
-                        text = "${index + 1}. $step",
+                    StepCard(
+                        number = index + 1,
+                        text = step,
+                        checked = index in checkedSteps,
+                        onToggle = { onToggleStep(index) },
+                        checkboxSize = 22.dp,
+                        checkboxCorner = 7.dp,
+                        cornerRadius = 15.dp,
                     )
                 }
             }
 
-            VerticalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+            VerticalDivider(color = Hairline)
 
             LazyColumn(
                 modifier = Modifier
                     .weight(1f)
-                    .fillMaxHeight(),
-                contentPadding = PaddingValues(12.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                    .fillMaxHeight()
+                    .background(SurfaceAlt),
+                contentPadding = PaddingValues(start = 26.dp, top = 24.dp, end = 26.dp, bottom = 26.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-                items(ingredients) { ingredient ->
-                    IngredientDisplayRow(text = "${ingredient.displayAmount()} ${ingredient.name}")
+                item {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 6.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = "Ingredienser",
+                            style = MaterialTheme.typography.headlineMedium,
+                            color = MaterialTheme.colorScheme.onBackground,
+                        )
+                        CloseButton(onClick = onExit)
+                    }
+                }
+                itemsIndexed(ingredients) { _, ingredient ->
+                    IngredientRow(ingredient = ingredient)
                 }
             }
         }
+    }
+}
 
-        ExitButton(
-            onClick = onExit,
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(12.dp),
+@Composable
+private fun IngredientRow(ingredient: Ingredient) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(15.dp),
+        color = CreamSurface,
+        border = BorderStroke(1.dp, CardBorder),
+        shadowElevation = 1.dp,
+    ) {
+        IngredientLabel(
+            ingredient = ingredient,
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
         )
     }
 }
 
 @Composable
-private fun CheckableRow(checked: Boolean, onCheckedChange: (Boolean) -> Unit, text: String) {
-    Surface(
-        shape = RoundedCornerShape(8.dp),
-        color = MaterialTheme.colorScheme.surface,
-        shadowElevation = 1.dp,
-    ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Checkbox(checked = checked, onCheckedChange = onCheckedChange)
-            Text(
-                text = text,
-                style = MaterialTheme.typography.bodyLarge,
-                color = if (checked) {
-                    MaterialTheme.colorScheme.onSurfaceVariant
-                } else {
-                    MaterialTheme.colorScheme.onSurface
-                },
-                textDecoration = if (checked) TextDecoration.LineThrough else TextDecoration.None,
-            )
-        }
-    }
-}
-
-@Composable
-private fun IngredientDisplayRow(text: String) {
-    Surface(
-        shape = RoundedCornerShape(8.dp),
-        color = MaterialTheme.colorScheme.surface,
-        shadowElevation = 1.dp,
-    ) {
-        Text(
-            text = text,
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp),
-        )
-    }
-}
-
-@Composable
-private fun ExitButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
+private fun CloseButton(onClick: () -> Unit) {
     Surface(
         onClick = onClick,
-        modifier = modifier.size(40.dp),
-        shape = RoundedCornerShape(percent = 50),
-        color = MaterialTheme.colorScheme.primary,
-        contentColor = MaterialTheme.colorScheme.onPrimary,
+        modifier = Modifier.size(40.dp),
+        shape = CircleShape,
+        color = CreamSurface,
         shadowElevation = 2.dp,
     ) {
         Box(contentAlignment = Alignment.Center) {
-            Text(text = "✕", style = MaterialTheme.typography.titleMedium)
+            Icon(
+                painter = painterResource(R.drawable.ic_close),
+                contentDescription = "Stäng matlagningsläge",
+                tint = AccentGreen,
+                modifier = Modifier.size(20.dp),
+            )
         }
     }
 }

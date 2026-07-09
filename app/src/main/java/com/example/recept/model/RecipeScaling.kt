@@ -9,9 +9,9 @@ import kotlin.math.roundToInt
 private const val FRACTION_TOLERANCE = 0.02
 
 private val RECOGNIZED_FRACTIONS = listOf(
-    0.25 to "1/4",
-    0.5 to "1/2",
-    0.75 to "3/4",
+    0.25 to "¼",
+    0.5 to "½",
+    0.75 to "¾",
 )
 
 fun Recipe.scaledIngredients(targetPortions: Int): List<Ingredient> {

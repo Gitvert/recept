@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+  body { margin: 0; font-family: 'Hanken Grotesk', sans-serif; }
+  a, a:hover { color: #3f5540; }
+  .scr::-webkit-scrollbar { width: 0; height: 0; }
+  .scr { scrollbar-width: none; }
+</style>
+</helmet>
+
+<div style="min-height:100vh;width:100%;background:#e7e1d1;padding:64px 56px 96px;display:flex;flex-direction:column;gap:40px;font-family:'Hanken Grotesk',sans-serif;">
+
+  <div style="display:flex;flex-direction:column;gap:6px;">
+    <div style="font-size:13px;letter-spacing:0.26em;text-transform:uppercase;color:#7c7a68;font-weight:600;">Nordkök · receptapp</div>
+    <div style="font-size:34px;font-weight:800;color:#33452f;letter-spacing:-0.02em;">Varmt nordiskt kök</div>
+    <div style="font-size:15px;color:#8a8873;max-width:520px;">Receptlista, recept och matlagningsläge — samma funktioner som förlagan, men i en lugn, hemtrevlig ton av gröna och gräddvita toner.</div>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:56px;align-items:flex-start;">
+
+    <!-- ============ SCREEN 1: LIST ============ -->
+    <div id="screen-list" style="display:flex;flex-direction:column;gap:16px;align-items:center;">
+      <div style="border-radius:48px;background:#20301d;padding:11px;box-shadow:0 40px 70px -30px rgba(35,50,30,0.55),0 0 0 1px rgba(0,0,0,0.05);">
+        <div class="scr" style="position:relative;width:372px;height:806px;border-radius:38px;overflow:hidden;background:#f5efe3;display:flex;flex-direction:column;">
+          <!-- status bar -->
+          <div style="flex:0 0 auto;height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:14px;font-weight:700;color:#33452f;">
+            <span>14:34</span>
+            <span style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:#33452f;">
+              <span style="width:22px;height:12px;border:1.5px solid #33452f;border-radius:3px;display:inline-flex;align-items:center;padding:1px;"><span style="width:11px;height:6px;background:#33452f;border-radius:1px;"></span></span>62
+            </span>
+          </div>
+          <!-- app header -->
+          
+          <!-- meta row -->
+          <div style="flex:0 0 auto;padding:6px 20px 14px;display:flex;align-items:flex-start;justify-content:space-between;border-bottom:1px solid #e4dcc9;">
+            <div style="font-size:14px;color:#8a8873;line-height:1.4;">
+              <div style="font-weight:600;color:#5e5c4c;">29 recept</div>
+              
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;color:#4a6047;font-weight:700;font-size:15px;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4a6047" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h9"></path></svg>
+              Senast tillagd
+            </div>
+          </div>
+          <!-- scrolling list -->
+          <div class="scr" style="flex:1 1 auto;overflow-y:auto;padding:16px 16px 24px;display:flex;flex-direction:column;gap:14px;">
+            <sc-for list="{{ recipes }}" as="r" hint-placeholder-count="4">
+              <div style="background:#fffdf7;border-radius:22px;padding:16px;box-shadow:0 10px 24px -18px rgba(40,50,30,0.4);border:1px solid #efe8d7;display:flex;flex-direction:column;gap:14px;">
+                <div style="display:flex;gap:14px;">
+                  <div style="flex:1 1 auto;display:flex;flex-direction:column;gap:10px;min-width:0;">
+                    <div style="font-size:20px;font-weight:800;color:#2b2a22;letter-spacing:-0.01em;line-height:1.15;">{{ r.title }}</div>
+                    <sc-if value="{{ r.veg }}" hint-placeholder-val="{{ true }}">
+                      <span style="display:inline-flex;align-items:center;gap:6px;align-self:flex-start;background:#e7ecdf;color:#5f7a4a;font-size:12px;font-weight:700;padding:5px 10px;border-radius:999px;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5f7a4a" stroke-width="2"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 3 1.5 8-1.5 11.5A7 7 0 0 1 11 20z"></path><path d="M2 21c0-3 4-5 9-8"></path></svg>Vegetariskt
+                      </span>
+                    </sc-if>
+                  </div>
+                  <div style="position:relative;flex:0 0 auto;">
+                    <div style="width:112px;height:112px;border-radius:18px;overflow:hidden;background-image:repeating-linear-gradient(135deg,#e9e2cf 0 10px,#e2dac4 10px 20px);display:flex;align-items:center;justify-content:center;text-align:center;padding:6px;">
+                      <span style="font-family:ui-monospace,monospace;font-size:9px;color:#9a9377;line-height:1.3;">{{ r.imgLabel }}</span>
+                    </div>
+                    <sc-if value="{{ r.offer }}" hint-placeholder-val="{{ true }}">
+                      
+                    </sc-if>
+                  </div>
+                </div>
+                <div style="background:#eaeede;border-radius:14px;padding:11px 14px;display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;">
+                  <span style="display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:#3f5540;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#4a6047" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>{{ r.time }}
+                  </span>
+                  <span style="display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:#3f5540;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#4a6047" stroke-width="2"><path d="M8 3h5l1 4v13a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V7z"></path><path d="M8 3l-1 4h7"></path></svg>{{ r.ingCount }} ingredienser
+                  </span>
+                  <sc-if value="{{ showDifficulty }}" hint-placeholder-val="{{ true }}">
+                    <span style="display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:#3f5540;">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="#4a6047"><rect x="3" y="14" width="4" height="6" rx="1"></rect><rect x="10" y="9" width="4" height="11" rx="1" opacity="0.55"></rect><rect x="17" y="4" width="4" height="16" rx="1" opacity="0.25"></rect></svg>{{ r.difficulty }}
+                    </span>
+                  </sc-if>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:13px;font-weight:600;color:#7c7a68;letter-spacing:0.04em;">Receptlista</div>
+    </div>
+
+    <!-- ============ SCREEN 2: DETAIL ============ -->
+    <div id="screen-detail" style="display:flex;flex-direction:column;gap:16px;align-items:center;">
+      <div style="border-radius:48px;background:#20301d;padding:11px;box-shadow:0 40px 70px -30px rgba(35,50,30,0.55),0 0 0 1px rgba(0,0,0,0.05);">
+        <div class="scr" style="position:relative;width:372px;height:806px;border-radius:38px;overflow:hidden;background:#f5efe3;display:flex;flex-direction:column;">
+          <div style="flex:0 0 auto;height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:14px;font-weight:700;color:#33452f;">
+            <span>14:34</span>
+            <span style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;"><span style="width:22px;height:12px;border:1.5px solid #33452f;border-radius:3px;display:inline-flex;align-items:center;padding:1px;"><span style="width:11px;height:6px;background:#33452f;border-radius:1px;"></span></span>62</span>
+          </div>
+          <!-- detail header -->
+          <div style="flex:0 0 auto;padding:6px 18px 12px;display:flex;align-items:center;gap:12px;border-bottom:1px solid #e4dcc9;">
+            <a href="#screen-list" style="display:flex;align-items:center;text-decoration:none;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4a6047" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg></a>
+            <span style="flex:1 1 auto;font-size:20px;font-weight:800;color:#2b2a22;letter-spacing:-0.01em;">Våfflor grundrecept</span>
+            
+            
+          </div>
+          <!-- scroll -->
+          <div class="scr" style="flex:1 1 auto;overflow-y:auto;padding-bottom:24px;">
+            <!-- hero -->
+            <div style="height:210px;background-image:repeating-linear-gradient(135deg,#e9e2cf 0 12px,#e2dac4 12px 24px);display:flex;align-items:center;justify-content:center;">
+              <span style="font-family:ui-monospace,monospace;font-size:11px;color:#9a9377;">våffelstapel · foto</span>
+            </div>
+            <div style="padding:20px 20px 0;">
+              <!-- portion scaler -->
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+                <div>
+                  
+                  <div style="font-size:24px;font-weight:800;color:#2b2a22;letter-spacing:-0.01em;">Ingredienser</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:12px;background:#fffdf7;border:1px solid #e4dcc9;border-radius:999px;padding:5px;box-shadow:0 6px 16px -12px rgba(0,0,0,0.4);">
+                  <div onClick="{{ decServings }}" style="width:38px;height:38px;border-radius:50%;background:#eaeede;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" stroke="#3f5540" stroke-width="2.6" stroke-linecap="round"><path d="M6 12h12"></path></svg>
+                  </div>
+                  <span style="font-size:14px;font-weight:700;color:#2b2a22;min-width:74px;text-align:center;">{{ servings }} portioner</span>
+                  <div onClick="{{ incServings }}" style="width:38px;height:38px;border-radius:50%;background:#eaeede;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" stroke="#3f5540" stroke-width="2.6" stroke-linecap="round"><path d="M12 6v12M6 12h12"></path></svg>
+                  </div>
+                </div>
+              </div>
+              <!-- ingredients -->
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <sc-for list="{{ ingredients }}" as="ig" hint-placeholder-count="6">
+                  <div style="display:flex;align-items:center;gap:14px;background:#fffdf7;border:1px solid #efe8d7;border-radius:16px;padding:15px 16px;box-shadow:0 6px 16px -16px rgba(0,0,0,0.4);">
+                    <span style="font-size:17px;color:#2b2a22;"><b style="font-weight:800;">{{ ig.qty }} {{ ig.unit }}</b><span style="color:#5e5c4c;margin-left:9px;">{{ ig.name }}</span></span>
+                  </div>
+                </sc-for>
+              </div>
+              <!-- allergen -->
+              <div style="margin-top:24px;">
+                
+                
+              </div>
+              <!-- steps -->
+              <div style="margin-top:26px;">
+                <div style="font-family:'Hanken Grotesk';font-style:italic;font-size:15px;font-weight:600;color:#8a7a4a;">Under 45 minuter</div>
+                <div style="font-size:24px;font-weight:800;color:#2b2a22;letter-spacing:-0.01em;margin-bottom:14px;">Gör så här</div>
+                <div style="background:#eef1e7;border-radius:18px;padding:18px;margin-bottom:12px;">
+                  <div style="font-size:15px;color:#4a5942;margin-bottom:14px;">Se ingredienser och tillagningssteg bredvid varandra.</div>
+                  <a href="#screen-cook" style="text-decoration:none;display:block;"><button style="width:100%;border:none;cursor:pointer;background:#3f5540;color:#f5efe3;font-family:inherit;font-size:16px;font-weight:800;padding:15px;border-radius:14px;display:flex;align-items:center;justify-content:center;gap:10px;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f5efe3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h16"></path><path d="M6 9v7a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V9"></path><path d="M4 12H2M20 12h2"></path><path d="M12 5v4"></path></svg>Starta matlagningsläge
+                  </button></a>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:10px;">
+                  <sc-for list="{{ steps }}" as="st" hint-placeholder-count="5">
+                    <div onClick="{{ st.toggle }}" style="display:flex;gap:14px;background:#fffdf7;border:1px solid #efe8d7;border-radius:16px;padding:16px;cursor:pointer;box-shadow:0 6px 16px -16px rgba(0,0,0,0.4);">
+                      <div style="flex:0 0 auto;width:24px;height:24px;border-radius:8px;border:2px solid {{ st.boxBorder }};background:{{ st.boxBg }};display:flex;align-items:center;justify-content:center;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fffdf7" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" style="opacity:{{ st.checkOpacity }};"><path d="M4 12l5 5L20 6"></path></svg>
+                      </div>
+                      <span style="font-size:16px;line-height:1.45;color:{{ st.textColor }};text-decoration:{{ st.strike }};"><b style="font-weight:800;color:#8fa06a;margin-right:6px;">{{ st.n }}</b>{{ st.text }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </div>
+          <a href="#screen-cook" title="Starta matlagningsläge" style="position:absolute;right:18px;bottom:22px;width:60px;height:60px;border-radius:50%;background:#3f5540;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 14px 28px -8px rgba(51,69,47,0.7),0 0 0 5px rgba(245,239,227,0.85);">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#f5efe3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h16"></path><path d="M6 9v7a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V9"></path><path d="M4 12H2M20 12h2"></path><path d="M12 5v4"></path></svg>
+          </a>
+        </div>
+      </div>
+      <div style="font-size:13px;font-weight:600;color:#7c7a68;letter-spacing:0.04em;">Recept</div>
+    </div>
+
+    <!-- ============ SCREEN 3: COOKING MODE (landscape) ============ -->
+    <div id="screen-cook" style="display:flex;flex-direction:column;gap:16px;align-items:center;">
+      <div style="border-radius:48px;background:#20301d;padding:11px;box-shadow:0 40px 70px -30px rgba(35,50,30,0.55),0 0 0 1px rgba(0,0,0,0.05);">
+        <div class="scr" style="position:relative;width:812px;height:392px;border-radius:36px;overflow:hidden;background:#f5efe3;display:flex;">
+          <!-- left: steps -->
+          <div class="scr" style="flex:1 1 0;overflow-y:auto;padding:24px 26px 26px;border-right:1px solid #e4dcc9;">
+            <div style="margin-bottom:16px;">
+              <span style="font-size:24px;font-weight:800;color:#2b2a22;letter-spacing:-0.01em;">Gör så här</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <sc-for list="{{ steps }}" as="st" hint-placeholder-count="5">
+                <div onClick="{{ st.toggle }}" style="display:flex;gap:13px;background:#fffdf7;border:1px solid #efe8d7;border-radius:15px;padding:15px 16px;cursor:pointer;box-shadow:0 6px 16px -16px rgba(0,0,0,0.4);">
+                  <div style="flex:0 0 auto;width:22px;height:22px;border-radius:7px;border:2px solid {{ st.boxBorder }};background:{{ st.boxBg }};display:flex;align-items:center;justify-content:center;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fffdf7" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" style="opacity:{{ st.checkOpacity }};"><path d="M4 12l5 5L20 6"></path></svg>
+                  </div>
+                  <span style="font-size:16px;line-height:1.4;color:{{ st.textColor }};text-decoration:{{ st.strike }};"><b style="font-weight:800;color:#8fa06a;margin-right:6px;">{{ st.n }}</b>{{ st.text }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <!-- right: ingredients -->
+          <div class="scr" style="flex:1 1 0;overflow-y:auto;padding:24px 26px 26px;background:#efe9dc;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+              <span style="font-size:24px;font-weight:800;color:#2b2a22;letter-spacing:-0.01em;">Ingredienser</span>
+              <a href="#screen-detail" style="text-decoration:none;"><div style="width:40px;height:40px;border-radius:50%;background:#fffdf7;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px -12px rgba(0,0,0,0.4);cursor:pointer;">
+                <svg width="20" height="20" viewBox="0 0 24 24" stroke="#4a6047" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+              </div></a>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <sc-for list="{{ ingredients }}" as="ig" hint-placeholder-count="6">
+                <div onClick="{{ ig.toggle }}" style="display:flex;align-items:center;gap:13px;background:#fffdf7;border:1px solid #efe8d7;border-radius:15px;padding:14px 16px;cursor:pointer;box-shadow:0 6px 16px -16px rgba(0,0,0,0.4);">
+                  <div style="flex:0 0 auto;width:20px;height:20px;border-radius:6px;border:2px solid {{ ig.boxBorder }};background:{{ ig.boxBg }};display:flex;align-items:center;justify-content:center;">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fffdf7" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" style="opacity:{{ ig.checkOpacity }};"><path d="M4 12l5 5L20 6"></path></svg>
+                  </div>
+                  <span style="font-size:16px;color:#2b2a22;"><b style="font-weight:800;">{{ ig.qty }} {{ ig.unit }}</b><span style="color:#5e5c4c;margin-left:9px;">{{ ig.name }}</span></span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:13px;font-weight:600;color:#7c7a68;letter-spacing:0.04em;">Matlagningsläge</div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1400,&quot;height&quot;:980},&quot;servingsDefault&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:4,&quot;min&quot;:1,&quot;max&quot;:20,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Innehåll&quot;},&quot;showDifficulty&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Receptlista&quot;},&quot;warmAccent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#c8a24a&quot;,&quot;options&quot;:[&quot;#c8a24a&quot;,&quot;#c07a52&quot;,&quot;#a98a3f&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Färg&quot;}}">
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const base = [
+      { a: 100, u: 'g', n: 'smör eller margarin' },
+      { a: 5, u: 'dl', n: 'vetemjöl' },
+      { a: 1.5, u: 'tsk', n: 'bakpulver' },
+      { a: 0.5, u: 'tsk', n: 'salt' },
+      { a: 2, u: 'st', n: 'ägg' },
+      { a: 5, u: 'dl', n: 'mjölk' },
+    ];
+    this.baseServings = 4;
+    this.baseIngredients = base;
+    this.stepList = [
+      'Smält smöret på svag värme. Låt det svalna.',
+      'Blanda mjöl, bakpulver och salt i en bunke.',
+      'Vispa ner ägg och mjölk i mjölblandningen till en slät smet. Vispa i smöret.',
+      'Grädda våfflorna gyllenbruna i ett hett våffeljärn.',
+      'Servera med sylt och vispad grädde.',
+    ];
+    this.state = {
+      servings: props.servingsDefault ?? 4,
+      ingChecked: {},
+      stepChecked: {},
+      saved: { 0: true, 1: false, 2: false, 3: false, 4: false },
+    };
+  }
+
+  fmt(v) {
+    v = Math.round(v * 100) / 100;
+    const whole = Math.floor(v + 1e-9);
+    const frac = v - whole;
+    let f = '';
+    if (Math.abs(frac - 0.25) < 0.02) f = '¼';
+    else if (Math.abs(frac - 0.5) < 0.02) f = '½';
+    else if (Math.abs(frac - 0.75) < 0.02) f = '¾';
+    else if (frac > 0.02) return String(Math.round(v * 10) / 10).replace('.', ',');
+    if (whole === 0 && f) return f;
+    if (f) return whole + ' ' + f;
+    return String(whole);
+  }
+
+  renderVals() {
+    const warm = this.props.warmAccent ?? '#c8a24a';
+    const showDifficulty = this.props.showDifficulty ?? true;
+    const s = this.state;
+    const scale = s.servings / this.baseServings;
+
+    const ingredients = this.baseIngredients.map((ig, i) => {
+      const on = !!s.ingChecked[i];
+      return {
+        qty: this.fmt(ig.a * scale),
+        unit: ig.u,
+        name: ig.n,
+        checked: on,
+        boxBg: on ? '#3f5540' : 'transparent',
+        boxBorder: on ? '#3f5540' : '#c6bfa9',
+        checkOpacity: on ? 1 : 0,
+        toggle: () => this.setState(st => ({ ingChecked: { ...st.ingChecked, [i]: !st.ingChecked[i] } })),
+      };
+    });
+
+    const steps = this.stepList.map((t, i) => {
+      const on = !!s.stepChecked[i];
+      return {
+        n: i + 1,
+        text: t,
+        checked: on,
+        boxBg: on ? '#3f5540' : 'transparent',
+        boxBorder: on ? '#3f5540' : '#c6bfa9',
+        checkOpacity: on ? 1 : 0,
+        textColor: on ? '#b0ab98' : '#2b2a22',
+        strike: on ? 'line-through' : 'none',
+        toggle: () => this.setState(st => ({ stepChecked: { ...st.stepChecked, [i]: !st.stepChecked[i] } })),
+      };
+    });
+
+    const recipeData = [
+      { title: 'Våfflor grundrecept', rating: '3,6', reviews: '3689', comments: 217, time: 'Under 45 min', ingCount: 6, difficulty: 'Enkel', veg: true, offer: false, imgLabel: 'våffelstapel' },
+      { title: 'Marry me chicken', rating: '4,4', reviews: '440', comments: 97, time: 'Under 45 min', ingCount: 18, difficulty: 'Medel', veg: false, offer: true, imgLabel: 'kyckling i gräddsås' },
+      { title: 'Krämig svamppasta', rating: '4,7', reviews: '312', comments: 54, time: 'Under 30 min', ingCount: 9, difficulty: 'Enkel', veg: true, offer: false, imgLabel: 'svamppasta' },
+      { title: 'Ugnsbakad lax med dill', rating: '4,5', reviews: '188', comments: 31, time: 'Under 40 min', ingCount: 7, difficulty: 'Enkel', veg: false, offer: false, imgLabel: 'lax i ugnsform' },
+      { title: 'Rotfruktssoppa', rating: '4,2', reviews: '95', comments: 12, time: 'Under 60 min', ingCount: 11, difficulty: 'Medel', veg: true, offer: false, imgLabel: 'krämig rotfruktssoppa' },
+    ];
+    const recipes = recipeData.map((r, i) => {
+      const on = !!s.saved[i];
+      return {
+        ...r,
+        saved: on,
+        saveBg: on ? '#33452f' : '#fffdf7',
+        heartFill: on ? '#f5efe3' : 'none',
+        heartStroke: on ? '#f5efe3' : '#7c7a68',
+        toggleSave: () => this.setState(st => ({ saved: { ...st.saved, [i]: !st.saved[i] } })),
+      };
+    });
+
+    return {
+      servings: s.servings,
+      yieldLabel: Math.max(1, Math.round(6 * scale)),
+      incServings: () => this.setState(st => ({ servings: Math.min(20, st.servings + 1) })),
+      decServings: () => this.setState(st => ({ servings: Math.max(1, st.servings - 1) })),
+      ingredients,
+      steps,
+      recipes,
+      showDifficulty,
+      warmAccent: warm,
+    };
+  }
+}
+</script>
+</body>
+</html>

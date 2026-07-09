@@ -11,3 +11,7 @@ internal fun ingredientCountLabel(count: Int) = if (count == 1) {
 } else {
     "$count ingredienser"
 }
+
+internal fun timeChipLabel(minutes: Int) = "Under $minutes min"
+
+internal fun timeEyebrowLabel(minutes: Int) = "Under $minutes minuter"
