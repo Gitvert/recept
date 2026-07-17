@@ -32,7 +32,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -104,37 +103,15 @@ fun RecipeListScreen(
 @Composable
 private fun MetaRow(recipeCount: Int) {
     Column {
-        Row(
+        Text(
+            text = "$recipeCount recept",
+            style = MaterialTheme.typography.labelLarge,
+            fontSize = 14.sp,
+            color = TextSecondary,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 20.dp, top = 6.dp, end = 20.dp, bottom = 14.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = "$recipeCount recept",
-                style = MaterialTheme.typography.labelLarge,
-                fontSize = 14.sp,
-                color = TextSecondary,
-            )
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_sort),
-                    contentDescription = null,
-                    tint = AccentGreen,
-                    modifier = Modifier.size(18.dp),
-                )
-                Text(
-                    text = "Senast tillagd",
-                    style = MaterialTheme.typography.labelLarge,
-                    fontWeight = FontWeight.Bold,
-                    color = AccentGreen,
-                )
-            }
-        }
+        )
         HorizontalDivider(color = Hairline)
     }
 }
