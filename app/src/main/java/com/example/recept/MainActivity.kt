@@ -6,8 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.example.recept.data.sampleRecipes
-import com.example.recept.ui.RecipeApp
+import com.example.recept.ui.RecipeRoot
 import com.example.recept.ui.theme.ReceptTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,7 +19,7 @@ class MainActivity : ComponentActivity() {
         )
         setContent {
             ReceptTheme {
-                RecipeApp(recipes = sampleRecipes)
+                RecipeRoot()
             }
         }
     }
