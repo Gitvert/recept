@@ -5,8 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -46,8 +44,6 @@ import com.example.recept.ui.theme.CreamSurface
 import com.example.recept.ui.theme.Hairline
 import com.example.recept.ui.theme.PrimaryGreen
 import com.example.recept.ui.theme.ReceptTheme
-import com.example.recept.ui.theme.TagBg
-import com.example.recept.ui.theme.TagText
 import com.example.recept.ui.theme.TextMuted
 import com.example.recept.ui.theme.TextSecondary
 
@@ -138,7 +134,6 @@ private fun SearchField(
     )
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun RecipeCard(
     recipe: Recipe,
@@ -155,70 +150,28 @@ fun RecipeCard(
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(14.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-                Column(
-                    modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
-                ) {
-                    Text(
-                        text = recipe.name,
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                    if (recipe.isVegetarian) {
-                        VegetarianTag()
-                    }
-                }
-                ImagePlaceholder(
-                    label = recipe.name,
-                    modifier = Modifier
-                        .size(112.dp)
-                        .clip(RoundedCornerShape(18.dp)),
-                )
-            }
+            Text(
+                text = recipe.name,
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
 
-            FlowRow(
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(14.dp))
                     .background(ChipStrip)
                     .padding(horizontal = 14.dp, vertical = 11.dp),
-                horizontalArrangement = Arrangement.spacedBy(18.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 MetaChip(iconRes = R.drawable.ic_clock, text = timeChipLabel(recipe.timeMinutes))
                 MetaChip(iconRes = R.drawable.ic_bottle, text = ingredientCountLabel(recipe.ingredients.size))
             }
-        }
-    }
-}
-
-@Composable
-private fun VegetarianTag() {
-    Surface(
-        shape = RoundedCornerShape(percent = 50),
-        color = TagBg,
-    ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
-            horizontalArrangement = Arrangement.spacedBy(6.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_leaf),
-                contentDescription = null,
-                tint = TagText,
-                modifier = Modifier.size(14.dp),
-            )
-            Text(
-                text = "Vegetariskt",
-                style = MaterialTheme.typography.labelSmall,
-                color = TagText,
-            )
         }
     }
 }

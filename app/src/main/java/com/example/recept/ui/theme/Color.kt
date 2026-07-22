@@ -23,7 +23,3 @@ val CardBorder = Color(0xFFDDE5CD)
 val CheckboxBorder = Color(0xFFB7C1A4)
 val ItalicAccent = Color(0xFF6F7A45)
 val CheckedDim = Color(0xFFB0AB98)
-
-val StripeLight = Color(0xFFE9E2CF)
-val StripeDark = Color(0xFFE2DAC4)
-val PlaceholderLabel = Color(0xFF9A9377)
