@@ -22,12 +22,16 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromJsonElement
+import kotlinx.serialization.json.jsonArray
 
 private const val RECIPES_COLLECTION = "recipes"
 
-/** Each Firestore document stores the recipe as a serialized JSON string under this field. */
+/** All recipes live in this single document as one JSON array under [RECIPE_JSON_FIELD]. */
+private const val RECIPES_DOCUMENT = "all"
+
+/** The string field holding the serialized JSON array of recipes. */
 private const val RECIPE_JSON_FIELD = "json"
 
 // Lenient so extra/missing fields in stored recipes don't break decoding.
@@ -83,11 +87,19 @@ class RecipeViewModel(
 
     private suspend fun loadRecipes() {
         _uiState.value = try {
-            val snapshot = firestore.collection(RECIPES_COLLECTION).get().await()
-            val recipes = snapshot.documents.mapNotNull { doc ->
-                val raw = doc.getString(RECIPE_JSON_FIELD) ?: return@mapNotNull null
-                // Skip any document whose JSON is malformed rather than failing the whole load.
-                runCatching { json.decodeFromString<Recipe>(raw).copy(id = doc.id) }.getOrNull()
+            val document = firestore.collection(RECIPES_COLLECTION)
+                .document(RECIPES_DOCUMENT)
+                .get()
+                .await()
+            val raw = document.getString(RECIPE_JSON_FIELD)
+            val recipes = if (raw.isNullOrBlank()) {
+                emptyList()
+            } else {
+                // Parse the array element-by-element so one malformed recipe is skipped
+                // rather than dropping the entire list.
+                json.parseToJsonElement(raw).jsonArray.mapNotNull { element ->
+                    runCatching { json.decodeFromJsonElement<Recipe>(element) }.getOrNull()
+                }
             }
             RecipeUiState.Success(recipes)
         } catch (e: Exception) {

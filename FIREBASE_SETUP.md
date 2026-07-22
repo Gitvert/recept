@@ -75,18 +75,21 @@ Your UID doesn't exist until you sign in once, and to sign in you must run the a
     ```
     → **Publish**.
 
-## H. Seed a few test recipes
-Each recipe is stored as **one document with a single string field named `json`** holding the whole recipe serialized as JSON. So adding a recipe = paste one string.
+## H. Seed recipes
+**All** recipes live in a **single document** `recipes/all`, in one string field named **`json`** that holds a **JSON array** of recipe objects. Editing workflow: open `recipes/all`, copy the `json` field into a code editor, edit, paste the whole thing back.
 
-20. **Firestore Database → Data** → **Start collection** → collection ID **`recipes`** → add a document with **Auto-ID** → add one field:
+20. **Firestore Database → Data** → **Start collection** → collection ID **`recipes`** → add a document with **Document ID** typed as **`all`** (NOT Auto-ID) → add one field:
     - **Field name:** `json`
     - **Type:** string
-    - **Value:** the serialized recipe, e.g. (all on one line when pasting):
+    - **Value:** a JSON **array** of recipes, e.g.:
       ```json
-      {"name":"Pannkakor","portions":4,"isVegetarian":true,"timeMinutes":30,"ingredients":[{"name":"vetemjöl","quantity":2.5,"unit":"dl"},{"name":"mjölk","quantity":6.0,"unit":"dl"}],"steps":["Vispa ihop smeten","Stek tunna pannkakor i smör"]}
+      [
+        {"name":"Pannkakor","portions":4,"isVegetarian":true,"timeMinutes":30,"ingredients":[{"name":"vetemjöl","quantity":2.5,"unit":"dl"},{"name":"mjölk","quantity":6.0,"unit":"dl"}],"steps":["Vispa ihop smeten","Stek tunna pannkakor i smör"]},
+        {"name":"Tomatpasta","portions":4,"isVegetarian":true,"timeMinutes":30,"ingredients":[{"name":"pasta","quantity":400.0,"unit":"g"}],"steps":["Koka pastan","Rör ihop"]}
+      ]
       ```
 
-JSON shape (the `id` is NOT included — it comes from the Firestore document id):
+Each recipe object's shape (no `id` key — recipes are identified by position in the array for now):
 
 | Key            | Type              |
 |----------------|-------------------|
@@ -97,7 +100,7 @@ JSON shape (the `id` is NOT included — it comes from the Firestore document id
 | `steps`        | array of strings  |
 | `ingredients`  | array of `{ name, quantity, unit }` objects |
 
-A seeding script (Node/Python via a service-account key) can push the existing `sampleRecipes` as `json` strings instead of hand-entering them.
+The app reads only `recipes/all`; any other documents in the collection are ignored. Recipes are parsed element-by-element, so one malformed object is skipped rather than breaking the whole list.
 
 ---
 
