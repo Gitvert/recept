@@ -116,11 +116,15 @@ fun IngredientLabel(
 ) {
     Text(
         text = buildAnnotatedString {
-            withStyle(SpanStyle(fontWeight = FontWeight.ExtraBold, color = TextPrimary)) {
-                append(ingredient.displayAmount())
+            // An amount of 0.0 means "no quantity" (e.g. salt to taste) — show only the name.
+            if (ingredient.quantity != 0.0) {
+                withStyle(SpanStyle(fontWeight = FontWeight.ExtraBold, color = TextPrimary)) {
+                    append(ingredient.displayAmount())
+                }
+                append("  ")
             }
             withStyle(SpanStyle(color = TextSecondary)) {
-                append("  ${ingredient.name}")
+                append(ingredient.name)
             }
         },
         style = style,
